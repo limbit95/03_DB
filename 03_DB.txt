@@ -82,7 +82,30 @@ update와 alter의 차이
 일반 - 작업공간 : Refresh using native hooks or polling 체크
 
 디비버 사용 시 
-- sys 
+- database : xe
+- port : 해당 컴퓨터에 맞는 포트 번호
+- username : sys
+- Role : sysdba
+- password : oracle
+
+새로운 DB 공간 할당 방법
+- 00 사용자 계정 파일 가져온다
+- 파일 안에 있는 4개의 쿼리문 각각 실행하면 되는데
+- CREATE USER @IDENTIFIED BY @
+- GRANT RESOURCE, CONNECT TO @
+- ALTER USER @DEFAULT TABLESPACE SYSTEM QUOTA UNLIMITED ON SYSTEM;
+- @가 들어간 곳에 본인이 원하는 이름과 비밀번호 설정한다
+- 새로운 데이터베이스 생성한다
+
+- database : xe
+- port : 해당 컴퓨터에 맞는 포트 번호
+- username : @
+- Role : normal
+- password : @
+
+Test Connection 테스트 후 완료해서 생성하기
+
+생성된 데이터베이스 이름 localhost 일 텐데 F2 눌러서 이름 바꾸기
 
 단축키 : 모든 쿼리문 드래그 후 ALT + X 
 -------------------------------- 기타 --------------------------------
