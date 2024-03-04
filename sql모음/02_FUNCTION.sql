@@ -44,7 +44,7 @@ SELECT EMP_NAME, SUBSTR(EMAIL, 1, INSTR(EMAIL, '@') - 1) "아이디" FROM EMPLOY
 -- 옵션 : LEADING(앞쪽), TRAILING(뒤쪽), BOTH(양쪽, 기본값)
 
 SELECT TRIM('     H E L L O     ') FROM DUAL; -- 양쪽 공백 제거
-SELECT TRIM(BOTH '#' FROM '#####안녕#####') FROM DUAL;
+SELECT TRIM(LEADING '#' FROM '#####안녕#####') FROM DUAL;
 
 ------------------------------------------------------------------
 

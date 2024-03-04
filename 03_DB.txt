@@ -71,9 +71,10 @@ LOB
 
 -------------------------------- 질문 --------------------------------
 
-update와 alter의 차이
+
 
 -------------------------------- 집 가서 디비버 설치할 때 --------------------------------
+127.0.0.1
 
 1. 디비버 localhost connect 안 될때
 로컬 - app - user1 - product - 18.0.0 - dbhomeXE - network - admin - listener.ora 파일과 tnsnames.ora 파일의 port 번호로 디비버 연결
@@ -81,7 +82,7 @@ update와 alter의 차이
 일반 : 힙 상태 표시 체크
 일반 - 작업공간 : Refresh using native hooks or polling 체크
 
-디비버 사용 시 
+디비버 사용 시
 - database : xe
 - port : 해당 컴퓨터에 맞는 포트 번호
 - username : sys
@@ -91,9 +92,9 @@ update와 alter의 차이
 새로운 DB 공간 할당 방법
 - 00 사용자 계정 파일 가져온다
 - 파일 안에 있는 4개의 쿼리문 각각 실행하면 되는데
-- CREATE USER @IDENTIFIED BY @
-- GRANT RESOURCE, CONNECT TO @
-- ALTER USER @DEFAULT TABLESPACE SYSTEM QUOTA UNLIMITED ON SYSTEM;
+- CREATE USER @(아이디) IDENTIFIED BY @(비밀번호)
+- GRANT RESOURCE, CONNECT TO @(아이디)
+- ALTER USER @(아이디) DEFAULT TABLESPACE SYSTEM QUOTA UNLIMITED ON SYSTEM;
 - @가 들어간 곳에 본인이 원하는 이름과 비밀번호 설정한다
 - 새로운 데이터베이스 생성한다
 
