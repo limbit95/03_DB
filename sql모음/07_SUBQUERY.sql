@@ -238,9 +238,8 @@ JOIN JOB USING(JOB_CODE)
 LEFT JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID)										
 WHERE EMP_ID NOT IN (SELECT DISTINCT MANAGER_ID
 										FROM EMPLOYEE
-										WHERE MANAGER_ID IS NOT NULL);
-										
-										
+										WHERE MANAGER_ID IS NOT NULL);	
+									
 										
 -- 5) 3, 4의 조회 결과를 하나로 합침 -> SELECT 절 SUBQUERY
 -- * SELECT 절에도 서브쿼리 사용할 수 있음!
@@ -251,7 +250,7 @@ WHERE EMP_ID NOT IN (SELECT DISTINCT MANAGER_ID
 --				WHEN 조건2 THEN 값2
 --				ELSE 값					
 --  END 별칭							
-							
+
 							
 SELECT EMP_ID, EMP_NAME, DEPT_TITLE, JOB_NAME,
 		CASE WHEN EMP_ID IN (SELECT DISTINCT MANAGER_ID
@@ -297,6 +296,7 @@ SELECT EMP_ID, EMP_NAME, JOB_NAME, SALARY
 FROM EMPLOYEE
 NATURAL JOIN JOB
 WHERE JOB_NAME = '대리';
+
 									
 									
 -- 2) 직급이 과장인 직원들 급여 조회
@@ -331,7 +331,6 @@ AND SALARY > ANY (SELECT SALARY
 									WHERE JOB_NAME = '과장');
 
 
-
 -- 차장 직급의 급여의 가장 큰 값보다 많이 받는 과장 직급의 직원
 -- 사번, 이름, 직급, 급여 조회
 
@@ -341,17 +340,21 @@ SELECT EMP_ID, EMP_NAME, JOB_NAME, SALARY
 FROM EMPLOYEE
 JOIN JOB USING(JOB_CODE)
 WHERE JOB_NAME = '과장'
-AND SALARY > ALL (SELECT SALARY FROM EMPLOYEE 
-									JOIN JOB USING(JOB_CODE)
+AND SALARY < ALL (SELECT SALARY FROM EMPLOYEE
+								JOIN JOB USING(JOB_CODE)
 								WHERE JOB_NAME = '차장');
 
+SELECT EMP_NAME, SALARY
+FROM EMPLOYEE
+JOIN JOB USING(JOB_CODE)
+WHERE JOB_NAME = '차장';
 
 
 -- 서브쿼리 중첩 사용 (응용편!)
 
 -- LOCATION 테이블에서 NATIONAL_CODE가 KO인 경우의 LOCAL_CODE와
 -- DEPARTMENT 테이블의 LOCATION_ID와 동일한 DEPT_ID가
--- EMPLOYEE테이블의 DEPT_CODE와 동일한 사원을 구하시오.							
+-- EMPLOYEE테이블의 DEPT_CODE와 동일한 사원을 구하시오.
 
 							
 -- 1) LOCATION 테이블에서 NATIONAL_CODE가 KO인 경우의 LOCAL_CODE 조회
@@ -359,7 +362,7 @@ SELECT LOCAL_CODE
 FROM LOCATION
 WHERE NATIONAL_CODE = 'KO'; -- 'L1'
 
-								
+
 -- 2) DEPARTMENT 테이블에서 위의 결과와 동일한 LOCATION_ID를 가지고 있는 DEPT_ID 조회
 SELECT DEPT_ID
 FROM DEPARTMENT
@@ -381,7 +384,7 @@ WHERE DEPT_CODE IN (SELECT DEPT_ID -- 다중행
 	
 ---------------------------------------------------------------------------
 
--- 3. (단일행) 다중열 서브쿼리 
+-- 3. (단일행) 다중열 서브쿼리
 --    서브쿼리 SELECT 절에 나열된 컬럼 수가 여러개 일 때
 
 
@@ -389,7 +392,7 @@ WHERE DEPT_CODE IN (SELECT DEPT_ID -- 다중행
 -- 사원의 이름, 직급, 부서, 입사일을 조회
 																			
 -- 1) 퇴사한 여직원 조회
-SELECT DEPT_CODE, JOB_CODE																			
+SELECT DEPT_CODE, JOB_CODE
 FROM EMPLOYEE
 WHERE ENT_YN = 'Y'
 AND SUBSTR(EMP_NO, 8, 1) = '2'; -- 이태림	D8	J6
@@ -402,7 +405,7 @@ AND SUBSTR(EMP_NO, 8, 1) = '2'; -- 이태림	D8	J6
 
 SELECT EMP_NAME, JOB_CODE, DEPT_CODE, HIRE_DATE
 FROM EMPLOYEE
-WHERE DEPT_CODE = (SELECT DEPT_CODE																		
+WHERE DEPT_CODE = (SELECT DEPT_CODE
 									FROM EMPLOYEE
 									WHERE ENT_YN = 'Y'
 									AND SUBSTR(EMP_NO, 8, 1) = '2')
@@ -429,6 +432,7 @@ WHERE (DEPT_CODE, JOB_CODE) = (SELECT DEPT_CODE, JOB_CODE
 
 -- 1. 노옹철 사원과 같은 부서, 같은 직급인 사원을 조회(단, 노옹철 제외)
 -- 사번, 이름, 부서코드, 직급코드, 부서명, 직급명 
+												
 SELECT EMP_ID, EMP_NAME, DEPT_CODE, JOB_CODE, DEPT_TITLE, JOB_NAME
 FROM EMPLOYEE
 JOIN JOB USING(JOB_CODE)
@@ -441,19 +445,16 @@ AND EMP_NAME != '노옹철';
 															
 -- 2. 2000년도에 입사한 사원의 부서와 직급이 같은 사원을 조회
 --		사번, 이름, 부서코드, 직급코드, 입사일															
-
 SELECT EMP_ID, EMP_NAME, DEPT_CODE, JOB_CODE, HIRE_DATE
 FROM EMPLOYEE
 WHERE (DEPT_CODE, JOB_CODE) = (SELECT DEPT_CODE, JOB_CODE
 															FROM EMPLOYEE
 														WHERE EXTRACT(YEAR FROM HIRE_DATE) = 2000);
 
-												
-
 															
 -- 3. 77년생 여자 사원과 동일한 부서이면서 동일한 사수를 가지고 있는 사원 조회
 --		사번, 이름, 부서코드, 사수번호, 주민번호, 입사일															
-															
+													
 SELECT EMP_ID, EMP_NAME, DEPT_CODE, MANAGER_ID, EMP_NO, HIRE_DATE
 FROM EMPLOYEE
 WHERE (DEPT_CODE, MANAGER_ID) = (SELECT DEPT_CODE, MANAGER_ID
@@ -569,6 +570,8 @@ LEFT JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID);
 SELECT EMP_ID
 FROM EMPLOYEE
 WHERE MANAGER_ID = 207;
+
+
 /* 사수가 200번인 사원의 EMP_ID가
  * 201, 204, 207, 211, 214 임
  * 이 번호들이 메인쿼리의 EMP_ID에 존재하면 조회결과에 포함
@@ -579,14 +582,15 @@ WHERE MANAGER_ID = 207;
  * 
  * */													
 
+
 -- 방법 1 )
 -- IN 연산자
 SELECT EMP_ID, EMP_NAME, DEPT_TITLE, MANAGER_ID
 FROM EMPLOYEE MAIN
-LEFT JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID)												
+LEFT JOIN DEPARTMENT ON (DEPT_CODE = DEPT_ID)											
 WHERE MAIN.MANAGER_ID IN (SELECT EMP_ID
 											FROM EMPLOYEE SUB
-											WHERE MAIN.MANAGER_ID = SUB.EMP_ID );													
+											WHERE MAIN.MANAGER_ID = SUB.EMP_ID );											
 													
 /* IN 서브쿼리는 메인쿼리의 조건을 만족하는 데이터를 반환함.
  * 따라서 각 직원의 MANAGER_ID가 다른 직원의 EMP_ID와 일치하는 경우에
@@ -616,6 +620,13 @@ WHERE EXISTS (SELECT EMP_ID
  * 
  * */													
 													
+-------------------------------------
+-------------------------------------
+-------------------------------------
+-- 여기서부터 다시 숙지
+-------------------------------------
+-------------------------------------
+-------------------------------------										
 													
 -- 부서별 입사일이 가장 빠른 사원의
 -- 사번, 이름, 부서코드, 부서명(NULL이면 '소속없음'), 직금명, 입사일 조회하고
