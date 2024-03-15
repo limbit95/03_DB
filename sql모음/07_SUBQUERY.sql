@@ -33,6 +33,16 @@ WHERE DEPT_CODE = (SELECT DEPT_CODE
 										WHERE EMP_NAME = '노옹철');
 --AND EMP_NAME != '노옹철';
 
+									
+									
+SELECT EMP_NAME, JOB_NAME, SALARY, SALARY * 12
+FROM EMPLOYEE
+JOIN JOB USING(JOB_CODE)
+WHERE JOB_NAME = '부사장'
+AND SALARY > 5000000;
+									
+									
+									
 
 									
 -- 서브쿼리 예시 2.
@@ -626,7 +636,7 @@ WHERE EXISTS (SELECT EMP_ID
 -- 여기서부터 다시 숙지
 -------------------------------------
 -------------------------------------
--------------------------------------										
+-------------------------------------
 													
 -- 부서별 입사일이 가장 빠른 사원의
 -- 사번, 이름, 부서코드, 부서명(NULL이면 '소속없음'), 직금명, 입사일 조회하고
