@@ -564,8 +564,7 @@ SELECT EMP_NAME, JOB_CODE, SALARY
 FROM EMPLOYEE MAIN
 WHERE SALARY > (SELECT AVG(SALARY) 
 								FROM EMPLOYEE SUB
-								WHERE MAIN.JOB_CODE = SUB.JOB_CODE ); 
-													
+								WHERE MAIN.JOB_CODE = SUB.JOB_CODE );
 													
 													
 -- 사수가 있는 직원의 사번, 이름, 부서명, 사수사번 조회

@@ -67,7 +67,7 @@ ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
 
 -- [작성법]
 -- CREATE USER 사용자명 IDENTIFIED BY 비밀번호;
-CREATE USER lsh_sample IDENTIFIED BY sample1234;
+CREATE USER test1 IDENTIFIED BY test1;
 
 -- 2. 새 연결 추가
 -- ORA-01045: 사용자 LSH_SAMPLE는 CREATE SESSION 권한을 가지고있지 않음; 로그온이 거절되었습니다
@@ -112,6 +112,9 @@ GRANT CONNECT, RESOURCE TO lsh_sample;
 -- CONNECT : DB 접속 관련 권한을 묶어둔 ROLE
 -- RESOURCE : DB 사용을 위한 기본 객체 생성 권한을 묶어둔 ROLE
 
+ALTER USER TEST DEFAULT TABLESPACE
+SYSTEM QUOTA UNLIMITED ON SYSTEM;
+
 ------------------------------------------------------------------------------------
 
 -- *** 객체 권한 ***
@@ -127,7 +130,7 @@ SELECT * FROM kh_lsh.EMPLOYEE;
 
 -- [객체 권한 부여 방법]
 -- GRANT 객체권한 ON 객체명 TO 사용자명;
-GRANT SELECT ON EMPLOYEE TO lsh_sample;
+GRANT SELECT ON EMPLOYEE TO test;
 
 -- 3. (lsh_sample) 다시 EMPLOYEE 조회
 SELECT * FROM kh_lsh.EMPLOYEE;
