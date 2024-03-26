@@ -104,6 +104,7 @@ SELECT * FROM "MEMBER";
 COMMIT;
 
 
+
 -- BOARD 테이블 샘플데이터 3개 삽입
 INSERT INTO "BOARD"
 VALUES(SEQ_BOARD_NO.NEXTVAL, '샘플 제목 1', '내용1 입니다\n안녕하세요',
