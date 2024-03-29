@@ -1,3 +1,18 @@
+-- 11G 버전 이전의 문법을 사용 가능하도록 함
+ALTER SESSION SET "_ORACLE_SCRIPT" = TRUE;
+-- CTRL + ENTER : 선택한 SQL 수행
+
+-- 사용자 계정 생성
+CREATE USER warrioronline IDENTIFIED BY warrioronline;
+
+-- 사용자 계정에 권한 부여
+GRANT RESOURCE, CONNECT TO warrioronline;
+
+-- 객체가 생성될 수 있는 공간 할당량 지정
+ALTER USER warrioronline DEFAULT TABLESPACE SYSTEM QUOTA UNLIMITED ON SYSTEM;
+
+--------------------------------------
+
 CREATE TABLE "MEMBER" (
 	"MEMBER_NO"	NUMBER		NOT NULL,
 	"MEMBER_ID"	VARCHAR2(50)		NOT NULL,
@@ -41,6 +56,10 @@ VALUES(SEQ_MEMBER_NO.NEXTVAL, 'user02', 'pass02'
 	, '유저이', DEFAULT, DEFAULT);
 	
 COMMIT;
+
+
+
+
 
 SELECT * FROM MEMBER;
 
